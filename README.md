@@ -2,7 +2,7 @@
 
 Benchmark for NBDAM: EMpirical Pipeline for correcting GO terms obtained by network-based discovery of active modoles (NBDAM) algorithms.
 
-@For more information see EMP repository and a preprint version of the study: https://www.biorxiv.org/content/10.1101/2020.03.10.984963v1
+For more information see [EMP repository][0] and a [preprint version of the study][1]: 
 
 This repository contains an implementation of the criteria used in the benchmark  
   
@@ -139,3 +139,7 @@ parameters:
 * Intra-module homogeneity: `./report/evaluation/homogeneity_avg_matrix_{cutoff}_{prefix}.tsv` - Richness score per algorithm, one file for each similarity cutoff
 * Robustness (f1): `./report/evaluation/robustness_f1_{prefix}_{n_end}_{ss_ratio}.tsv` - robustness f1 score per algorithm, one file for each downsampling ratio 
 * Robustness (AUPR): `./report/evaluation/robustness_aupr_{prefix}_{n_end}_{ss_ratio}.tsv` - robustness aupr score per algorithm, one file for each downsampling ratio
+
+
+[0]: https://github.com/Shamir-Lab/EMP
+[1]:  https://www.biorxiv.org/content/10.1101/2020.03.10.984963v1
