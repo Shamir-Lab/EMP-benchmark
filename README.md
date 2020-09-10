@@ -133,9 +133,9 @@ parameters:
 
 ## Main output files
 
-* EHR: "./report/evaluation/count_matrix_{prefix}.tsv", "./report/evaluation/ehr_matrix_{prefix}.tsv" - term counts and ehr scores per solution, respectively   
-* mEHR: "./report/evaluation/mEHR_mean_{}.tsv" - mEHR scores per algorithm and # of top ranked modules 
-* Richness: "./report/evaluation/richness_matrix_{cutoff}_{prefix}.tsv" - Richness score per algorithm, one file for each similarity cutoff   
-* Intra-module homogeneity: "./report/evaluation/homogeneity_avg_matrix_{cutoff}_{prefix}.tsv" - Richness score per algorithm, one file for each similarity cutoff
-* Robustness (f1): "./report/evaluation/robustness_f1_{prefix}_{n_end}_{ss_ratio}.tsv" - robustness f1 score per algorithm, one file for each downsampling ratio 
-* Robustness (AUPR): "./report/evaluation/robustness_aupr_{prefix}_{n_end}_{ss_ratio}.tsv" - robustness aupr score per algorithm, one file for each downsampling ratio
+* EHR: `./report/evaluation/count_matrix_{prefix}.tsv`, `./report/evaluation/ehr_matrix_{prefix}.tsv` - term counts and ehr scores per solution, respectively   
+* mEHR: `./report/evaluation/mEHR_mean_{}.tsv` - mEHR scores per algorithm and # of top ranked modules 
+* Richness: `./report/evaluation/richness_matrix_{cutoff}_{prefix}.tsv` - Richness score per algorithm, one file for each similarity cutoff   
+* Intra-module homogeneity: `./report/evaluation/homogeneity_avg_matrix_{cutoff}_{prefix}.tsv` - Richness score per algorithm, one file for each similarity cutoff
+* Robustness (f1): `./report/evaluation/robustness_f1_{prefix}_{n_end}_{ss_ratio}.tsv` - robustness f1 score per algorithm, one file for each downsampling ratio 
+* Robustness (AUPR): `./report/evaluation/robustness_aupr_{prefix}_{n_end}_{ss_ratio}.tsv` - robustness aupr score per algorithm, one file for each downsampling ratio
