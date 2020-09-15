@@ -40,7 +40,7 @@ def calc_homogeneity(cache_file, dataset=None, algo=None, module_i=None, base_fo
 
     all_go_terms_r, all_go_terms_o, adj = calc_intra_similarity(all_go_terms, pf, emp_results_fdr, cache_file,
                                                                 sim_method, reduce_list=False)
-    for k, v in adj.iteritems():
+    for k, v in adj.items():
         if float(v) > 0:
             edges.append((k.split("_")[0], k.split("_")[1], float(v)))
             vertices.append(k.split("_")[0])

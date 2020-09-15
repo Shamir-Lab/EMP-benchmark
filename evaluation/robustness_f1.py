@@ -110,8 +110,7 @@ def aggregate_solutions(dataset, cur, algo,
     return precision, recall
 
 
-def main(prefix, datasets, algos, parallelization_factor, n_start, n_end, ss_ratios, hg_th, base_folder):
-    filtered_go_ids_file = os.path.join(constants.GO_DIR, "filtered_go_terms.txt")
+def main(prefix, datasets, algos, parallelization_factor, n_start, n_end, ss_ratios, hg_th, base_folder, filtered_go_ids_file):
     filtered_go_ids = open(filtered_go_ids_file, 'r').read().split() + ["GO:0008150"]
     for ss_ratio in ss_ratios:
         df = pd.DataFrame()
@@ -169,6 +168,7 @@ if __name__ == "__main__":
     parser.add_argument('--override_permutations', help="takes max or all samples", dest='override_permutations',
                         default="false")
     parser.add_argument('--base_folder', help="base_folder", dest='base_folder', default=constants.OUTPUT_GLOBAL_DIR)
+    parser.add_argument('--filtered_go_ids_file', help="filtered_go_ids_file", dest='filtered_go_ids_file', default=os.path.join(constants.GO_DIR, "filtered_go_terms.txt"))
 
     args = parser.parse_args()
     prefix = args.prefix
@@ -181,6 +181,7 @@ if __name__ == "__main__":
     ss_ratios = [float(a) for a in args.ss_ratios.split(",")]
     override_permutations = args.override_permutations.lower() == "true"
     base_folder = args.base_folder
-    main(prefix, datasets, algos, parallelization_factor, n_start, n_end, ss_ratios, hg_th, base_folder)
+    filtered_go_ids_file = args.filtered_go_ids_file
+    main(prefix, datasets, algos, parallelization_factor, n_start, n_end, ss_ratios, hg_th, base_folder, filtered_go_ids_file)
 
 

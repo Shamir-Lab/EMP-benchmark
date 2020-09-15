@@ -6,7 +6,6 @@ __author__ = "DV Klopfenstein"
 import sys
 sys.path.insert(0, '../')
 import collections as cx
-from goatools.godag.consts import Consts
 from goatools.gosubdag.go_paths import GoPaths
 import constants
 """driver imports"""
@@ -30,7 +29,6 @@ class WrHierGO(object):
 
     kws_dct = set(['max_indent'])
     kws_set = set(['no_indent', 'concise'])
-    consts = Consts()
 
     def __init__(self, gosubdag, **kws):
         self.gosubdag = gosubdag  # GoSubDag arg, children=True, must be used
@@ -130,7 +128,7 @@ class _WrHierPrt(object):
         if self.include_only and goid not in self.include_only:
             return
         nrp = self.concise_prt and goid in self.gos_printed
-        if self.vertices.has_key(goid):
+        if goid in self.vertices:
             self.vertices[goid]["weight"] += 1
             self.vertices[goid]["depth"].append(depth)
         else:
@@ -145,18 +143,16 @@ class _WrHierPrt(object):
 
         self.gos_printed.add(goid)
         # Do not extract hierarchy below this turn if it has already been printed
-        # if nrp:
-        #     return
+
         depth += 1
         if self.max_indent is not None and depth > self.max_indent:
             return
         for child in ntobj.children:
-            if self.go2geneids.has_key(child.id) or True:
-                if self.edges.has_key("{}={}".format(goid, child.id)):
-                    self.edges["{}={}".format(goid, child.id)]["weight"] += 1
-                else:
-                    self.edges["{}={}".format(goid, child.id)] = {"weight" : 0}
-                self.ext_hier_rec(child.id, depth)
+            if "{}={}".format(goid, child.id) in self.edges:
+                self.edges["{}={}".format(goid, child.id)]["weight"] += 1
+            else:
+                self.edges["{}={}".format(goid, child.id)] = {"weight" : 0}
+            self.ext_hier_rec(child.id, depth)
 
     def prt_hier_rec(self, goid, depth=1):
         """Write hierarchy for a GO Term record and all GO IDs down to the leaf level."""
@@ -270,7 +266,7 @@ def write_hier_all(gosubdag, out, root_term):
     out.write('\nTEST ALL: Print all hierarchies:\n')
     objwr = WrHierGO(gosubdag)
     gos_printed = objwr.prt_hier_down(root_term, out)
-    print len(gos_printed)
+    print(len(gos_printed))
     # assert gos_printed == set(objwr.gosubdag.go2nt)
 
 
@@ -326,13 +322,13 @@ def fetch_go_hierarcy():
     if not os.path.exists(os.path.join(constants.GO_DIR, constants.GO_FILE_NAME)):
         wget.download(constants.GO_OBO_URL, os.path.join(constants.GO_DIR, constants.GO_FILE_NAME))
 
-    print "Downloading gene-GO associations"
+    print("Downloading gene-GO associations")
     association_file_location = os.path.join(constants.GO_DIR, constants.GO_ASSOCIATION_FILE_NAME)
     if not os.path.exists(association_file_location):
         wget.download(constants.GO_ASSOCIATION_GENE2GEO_URL,
                       os.path.join(constants.GO_DIR, constants.GO_ASSOCIATION_FILE_NAME))
 
-    print "Loading gene-GO associations"
+    print("Loading gene-GO associations")
     # gene2go = download_ncbi_associations(obo_file_location) - why does this line needed?
     go2geneids = read_ncbi_gene2go(association_file_location, taxids=[9606], go2geneids=True)
     geneids2go = read_ncbi_gene2go(association_file_location, taxids=[9606])
@@ -370,4 +366,4 @@ def build_hierarcy(roots=['GO:0008150']): #  0008150 0005575 0003674
 # main
 #################################################################
 if __name__ == '__main__':
-    print build_hierarcy()
+    print(build_hierarcy())

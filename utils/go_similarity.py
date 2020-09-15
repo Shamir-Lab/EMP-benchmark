@@ -2,13 +2,15 @@ import math
 import random
 import sys
 sys.path.insert(0, '../')
+import os
+import numpy as np
 
 import pandas as pd
 
-from fastsemsim.SemSim import *
-from fastsemsim.Ontology import ontologies
-from fastsemsim.Ontology import AnnotationCorpus
-from fastsemsim.SemSim.SetSemSim import SetSemSim
+from fastsemsim.semsim import *
+import fastsemsim.ontology as  ontologies
+from fastsemsim.ac.AnnotationCorpus import AnnotationCorpus
+from fastsemsim.semsim.SetSemSim import SetSemSim
 
 import constants
 
@@ -43,23 +45,24 @@ def init_go_metadata():
         source_type = 'obo'
         source = os.path.join(os.path.join(constants.GO_DIR, constants.GO_FILE_NAME))
 
-        print "\n######################"
-        print "# Loading ontology... #"
-        print "######################\n"
+        print("\n######################")
+        print("# Loading ontology... #")
+        print("######################\n")
 
-        ontology = ontologies.load(source=source, source_type=source_type, ontology_type=ontology_type,
+
+        ontology = ontologies.load(source_file=source, ontology_type=ontology_type,
                                    parameters=ignore_parameters)
 
-        print "\n######################"
-        print "# Loading Annotation Corpus... #"
-        print "######################\n"
-        ac = AnnotationCorpus.AnnotationCorpus(ontology)
+        print("\n######################")
+        print("# Loading Annotation Corpus... #")
+        print("######################\n")
+        ac = AnnotationCorpus(ontology)
         ac.parse(os.path.join(constants.GO_DIR, "goa_human.gaf"), "gaf-2.0")
         ac.isConsistent()
 
-        print "\n#################################"
-        print "# Annotation corpus successfully loaded."
-        print "#################################\n"
+        print("\n#################################")
+        print("# Annotation corpus successfully loaded.")
+        print("#################################\n")
 
         has_go_metadata=True
         loading_metadata=False
@@ -77,7 +80,7 @@ def init_go_hierarchy():
         ROOT = 'GO:0008150'
         dict_result, go2geneids, geneids2go, entrez2ensembl = go_hierarcies.build_hierarcy(
             roots=[ROOT])
-        vertices = dict_result.values()[0]['vertices']
+        vertices = list(dict_result.values())[0]['vertices']
 
         has_go_hierarchy=True
 
@@ -148,7 +151,7 @@ def calc_similarity_matrix(set_0, set_1, pf, cache_file ,sim_method='Resnik'):
             for i_y, y in enumerate(set_1):
                 calc_similarity(adj, x, y, semsim)
                 # params.append([calc_similarity, [adj, i_x, i_y, x, y, semsim]])
-        print "len(params): {}".format(len(params))
+        print("len(params): {}".format(len(params)))
 
 
         # p = multiprocessing.Pool(pf)
@@ -192,7 +195,7 @@ def calc_intra_similarity(all_go_terms, pf, enrichment_scores, cache_file, semsi
                 # print x, y
                 # calc_similarity(adj, x, y, semsim)
                 params.append([calc_similarity, [adj, x, y, semsim]])
-        print "len(params): {}".format(len(params))
+        print("len(params): {}".format(len(params)))
 
         init_go_metadata()
 #         p = multiprocessing.Pool(pf)
@@ -210,7 +213,7 @@ def calc_intra_similarity(all_go_terms, pf, enrichment_scores, cache_file, semsi
         execute_revigo(adj, all_go_terms_o, all_go_terms_r, enrichment_scores, cutoff, set_0, set_1)
 
 
-    print all_go_terms_r
+    print(all_go_terms_r)
     return all_go_terms_r, all_go_terms_o, adj
 
 

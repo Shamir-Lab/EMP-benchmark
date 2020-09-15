@@ -1,11 +1,6 @@
 import json
 import os
 
-import seaborn as sns
-sns.set(color_codes=True)
-from matplotlib.lines import Line2D
-import numpy as np
-
 import matplotlib as mpl
 font = {'size'   : 22}
 mpl.rc('font', **font)
@@ -36,8 +31,8 @@ ALGOS_ACRONYM={"jactivemodules_greedy":"jAM_greedy",
 
 ALGOS_NAMES=list(set(ALGOS_ACRONYM.values()))
 ALGOS=ALGOS_ACRONYM.keys() # sorted(ALGOS_ACRONYM.keys())
-COLORDICT = {a: sns.color_palette("bright", n_colors=len(ALGOS_NAMES))[ALGOS_NAMES.index(ALGOS_ACRONYM[a])] for a in ALGOS_ACRONYM}
-PATCHES = [Line2D([0], [0], marker='o', color='gray', label=ALGOS_ACRONYM[a], markersize=12, markerfacecolor=c, alpha=0.7) for a, c in COLORDICT.iteritems()]
+# COLORDICT = {a: sns.color_palette("bright", n_colors=len(ALGOS_NAMES))[ALGOS_NAMES.index(ALGOS_ACRONYM[a])] for a in ALGOS_ACRONYM}
+# PATCHES = [Line2D([0], [0], marker='o', color='gray', label=ALGOS_ACRONYM[a], markersize=12, markerfacecolor=c, alpha=0.7) for a, c in COLORDICT.iteritems()]
 
 DATASETS_ACRONYM={"Breast_Cancer.G50":"BC",
                   "Crohns_Disease.G50":"CD",
@@ -65,7 +60,7 @@ DATASETS_ACRONYM={"Breast_Cancer.G50":"BC",
 
 dir_path = os.path.dirname(os.path.realpath(__file__))
 PATH_TO_CONF = "env/config/conf.json"
-config_json = json.load(file(os.path.join(dir_path, PATH_TO_CONF)))
+config_json = json.load(open(os.path.join(dir_path, PATH_TO_CONF)))
 
 REPO_DIR = os.path.dirname(os.path.realpath(__file__))
 SH_DIR = os.path.join(REPO_DIR, "sh","scripts")
@@ -98,7 +93,7 @@ OUTPUT_GLOBAL_DIR = os.path.join(BASE_PROFILE, "report")
 TCGA_DATA_DIR = os.path.join(DATASET_DIR, "data")
 GO_DIR = os.path.join(BASE_PROFILE, "go")
 CACHE_GLOBAL_DIR = os.path.join(BASE_PROFILE, "cache_global")
-TRUE_SOLUTIONS_DIR = os.path.join(BASE_PROFILE, "true_solution_folder")
+TRUE_SOLUTIONS_DIR = os.path.join(BASE_PROFILE, "true_solutions")
 ROBUSTNESS_SOLUTIONS_DIR= os.path.join(BASE_PROFILE, "robustness_solutions")
 LIST_DIR = os.path.join(BASE_PROFILE, "list")
 REPOS_DIR = os.path.join(BASE_PROFILE, "repos")

@@ -24,7 +24,7 @@ def ehr_for_solution(algo_sample = None, dataset_sample = None,tsv_file_name=Non
     return sig_hg_genes, sig_emp_genes
 
 
-def main(datasets, algos, prefix):
+def main(datasets, algos, prefix, filtered_go_ids_file):
 
     hg_th=0.05
     df_matrix = pd.DataFrame()
@@ -32,7 +32,7 @@ def main(datasets, algos, prefix):
     for cur_ds in datasets:
         df_ds=pd.DataFrame()
         for cur_alg in algos:
-            sig_hg_genes, sig_emp_genes=ehr_for_solution(cur_alg, cur_ds,tsv_file_name=os.path.join(constants.OUTPUT_GLOBAL_DIR,"oob", "emp_diff_modules_{}_{}_passed_oob.tsv"), filtered_go_ids_file=os.path.join(constants.GO_DIR,"filtered_go_terms.txt"), hg_th=hg_th) # _gwas
+            sig_hg_genes, sig_emp_genes=ehr_for_solution(cur_alg, cur_ds,tsv_file_name=os.path.join(constants.OUTPUT_GLOBAL_DIR,"oob", "emp_diff_modules_{}_{}_passed_oob.tsv"), filtered_go_ids_file=None, hg_th=hg_th) # _gwas
 
             df_ds.loc["{}_{}".format(cur_ds,cur_alg), "algo"]=cur_alg
             df_ds.loc["{}_{}".format(cur_ds,cur_alg), "dataset"]=cur_ds
@@ -54,11 +54,14 @@ if __name__ == "__main__":
     parser.add_argument('--datasets', dest='datasets')
     parser.add_argument('--prefix', dest='prefix', default="GE")
     parser.add_argument('--algos', dest='algos')
+    parser.add_argument('--filtered_go_ids_file', help="filtered_go_ids_file", dest='filtered_go_ids_file',
+                        default=os.path.join(constants.GO_DIR, "filtered_go_terms.txt"))
 
     args = parser.parse_args()
     datasets = args.datasets.split(",")
     algos = args.algos.split(",")
     prefix = args.prefix
+    filtered_go_ids_file = args.filtered_go_ids_file
 
-    main(datasets,algos,prefix)
+    main(datasets,algos,prefix, filtered_go_ids_file)
 

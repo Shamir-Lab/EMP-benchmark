@@ -2,9 +2,8 @@ import sys
 sys.path.insert(0, '../')
 
 import pandas as pd
-
-from infra import *
-
+import os
+import numpy as np
 import constants
 import argparse
 
