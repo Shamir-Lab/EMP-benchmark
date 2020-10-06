@@ -1,4 +1,4 @@
-# Benchmark
+# EMP-Benchmark
 
 Benchmark for active module identification (AMI) algorithms.
 
