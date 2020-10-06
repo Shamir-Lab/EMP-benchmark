@@ -1,6 +1,6 @@
 # Benchmark
 
-Benchmark for NBDAM: EMpirical Pipeline for correcting GO terms obtained by network-based discovery of active modoles (NBDAM) algorithms.
+Benchmark for active module identification (AMI) algorithms.
 
 For more information see [EMP repository][0] and a [preprint version of the study][1]
 
