@@ -1,13 +1,13 @@
 import json
 import os
 
-import matplotlib as mpl
-font = {'size'   : 22}
-mpl.rc('font', **font)
-mpl.rc('xtick', labelsize=30)    # fontsize of the tick labels
-mpl.rc('ytick', labelsize=30)
-mpl.rc('axes', labelsize=22)
-mpl.rc('legend', fontsize=20)
+# import matplotlib as mpl
+# font = {'size'   : 22}
+# mpl.rc('font', **font)
+# mpl.rc('xtick', labelsize=30)    # fontsize of the tick labels
+# mpl.rc('ytick', labelsize=30)
+# mpl.rc('axes', labelsize=22)
+# mpl.rc('legend', fontsize=20)
 
 ALGOS_ACRONYM={"jactivemodules_greedy":"jAM_greedy",
                "jactivemodules_sa": "jAM_SA",
@@ -21,12 +21,6 @@ ALGOS_ACRONYM={"jactivemodules_greedy":"jAM_greedy",
                "DOMINO3": "DOMINO",
                "netbox2_string" : "NetBox",
                "DOMINO4": "DOMINO" 
-               # "dcem": "Domino",
-               # "domino": "DOMINO",
-               # "dcem2": "dcem2",
-               # "dcem3": "dcem3",
-               # "dcem4": "dcem4",
-               # "my_netbox_td": "my_netbox_td"
                }
 
 ALGOS_NAMES=list(set(ALGOS_ACRONYM.values()))
@@ -93,7 +87,7 @@ OUTPUT_GLOBAL_DIR = os.path.join(BASE_PROFILE, "report")
 TCGA_DATA_DIR = os.path.join(DATASET_DIR, "data")
 GO_DIR = os.path.join(BASE_PROFILE, "go")
 CACHE_GLOBAL_DIR = os.path.join(BASE_PROFILE, "cache_global")
-TRUE_SOLUTIONS_DIR = os.path.join(BASE_PROFILE, "true_solutions")
+TRUE_SOLUTIONS_DIR = os.path.join(BASE_PROFILE, "true_solution_folder")
 ROBUSTNESS_SOLUTIONS_DIR= os.path.join(BASE_PROFILE, "robustness_solutions")
 LIST_DIR = os.path.join(BASE_PROFILE, "list")
 REPOS_DIR = os.path.join(BASE_PROFILE, "repos")
@@ -183,3 +177,4 @@ def update_dirs(BASE_DIR=config_json["BASE_PROFILE"], DATASET_NAME_u=None, DATAS
     CACHE_GLOBAL_DIR = os.path.join(BASE_PROFILE, "cache_global")
     RAW_DIR = os.path.join(BASE_PROFILE, "raw")
 update_dirs()
+

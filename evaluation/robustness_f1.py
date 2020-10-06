@@ -2,7 +2,6 @@ import sys
 
 sys.path.insert(0, '../')
 
-from infra import *
 import pandas as pd
 import numpy as np
 import argparse
@@ -11,7 +10,9 @@ from utils.daemon_multiprocessing import MyPool, func_star
 from statsmodels.sandbox.stats.multicomp import fdrcorrection0
 from utils.add_GO_terms_metadata_agg import get_all_genes_for_term, vertices
 import multiprocessing
+import os
 
+import constants
 
 def get_enriched_terms(algos, datasets, filtered_go_ids, hg_th):
     for cur_algo in algos:
@@ -39,7 +40,7 @@ def get_enriched_terms(algos, datasets, filtered_go_ids, hg_th):
 
         df_go_pvals = df_go_pvals.min(axis=1)
 
-        n_genes = [len(get_all_genes_for_term(vertices, cur_go_id, cur_go_id, cur_go_id == cur_go_id)) for i, cur_go_id
+        n_genes = [len(get_all_genes_for_term(cur_go_id, cur_go_id, cur_go_id == cur_go_id)) for i, cur_go_id
                    in
                    enumerate(df_go_pvals.index.values)]
         n_genes_series = pd.Series(n_genes, index=df_go_pvals.index)
@@ -71,20 +72,20 @@ def aggregate_solutions(dataset, cur, algo,
                         base_folder=None, filtered_go_ids=[], ss_ratio=0.4, precisions=None,
                         recalls=None, hg_th=0.05):
     print("starting iteration: {}, {}".format(dataset, cur))
-    try:
-        recovered_dataset_name = "sol_{}_{}_robustness_{}_{}".format(algo, dataset, cur, ss_ratio)
+    # try:
+    recovered_dataset_name = "sol_{}_{}_robustness_{}_{}".format(algo, dataset, cur, ss_ratio)
 
-        cur_pval, df_terms, df_pval_terms = get_enriched_terms([algo], [recovered_dataset_name], filtered_go_ids, hg_th)
+    cur_pval, df_terms, df_pval_terms = get_enriched_terms([algo], [recovered_dataset_name], filtered_go_ids, hg_th)
 
-        df = pd.read_csv(
-            os.path.join(base_folder, "oob", "emp_diff_modules_{}_{}_passed_oob.tsv".format(dataset, algo)),
-            sep='\t').sort_values(by=["hg_pval_max"], ascending=False)
-        full_sig_terms = df.loc[df["passed_oob_permutation_test"].dropna(axis=0).apply(
-            lambda a: np.any(np.array(a[1:-1].split(", ")) == "True")).values, :].sort_values(by=["hg_pval_max"],
+    df = pd.read_csv(
+        os.path.join(base_folder, "oob", "emp_diff_modules_{}_{}_passed_oob.tsv".format(dataset, algo)),
+        sep='\t').sort_values(by=["hg_pval_max"], ascending=False).dropna(axis=0)
+    full_sig_terms = df.loc[df["passed_oob_permutation_test"].apply(
+        lambda a: np.any(np.array(a[1:-1].split(", ")) == "True")).values, :].sort_values(by=["hg_pval_max"],
                                                                                               ascending=False)['GO id']
-    except Exception as e:
-        print("error: {}".format(e))
-        full_sig_terms = np.array([])
+    # except Exception as e:
+    #     print("error: {}".format(e))
+    #     full_sig_terms = np.array([])
 
     df_detailed_pr = df_pval_terms.to_frame().rename(columns={0: 'pval'})
     df_detailed_pr.columns
@@ -183,5 +184,6 @@ if __name__ == "__main__":
     base_folder = args.base_folder
     filtered_go_ids_file = args.filtered_go_ids_file
     main(prefix, datasets, algos, parallelization_factor, n_start, n_end, ss_ratios, hg_th, base_folder, filtered_go_ids_file)
+
 
 
