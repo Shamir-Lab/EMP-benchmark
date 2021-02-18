@@ -32,7 +32,7 @@ def plot_modules_ehr_summary(prefix, datasets, algos):
                                                                             "emp_diff_modules_{}_{}_passed_oob.tsv"),
                                                modules_file_name=os.path.join(constants.TRUE_SOLUTIONS_DIR,
                                                                               "{}_{}/report/modules_summary.tsv"),
-                                               emp_ratio_th=0.5)
+                                               emp_ratio_th=0.5, n_dist=n_dist)
             except Exception as e:
                 print("error: {}".format(e))
                 continue
