@@ -80,9 +80,6 @@ def main(prefix,datasets,algos,n_start,n_end,ss_ratios):
                     precision, recall, _ = precision_recall_curve(y_test, y_score)
 
                     print("average precision: {}".format(average_precision))
-                    print("save curve in :{}".format(os.path.join(constants.OUTPUT_GLOBAL_DIR, "robustness_cache",
-                                                                  "pr_curve_terms_recovery_{}_{}_{}_{}.png".format(
-                                                                      dataset, algo, n_end, ss_ratio))))
                     df_pr_auc.loc[algo, dataset] = average_precision
         df_pr_auc.to_csv(os.path.join(constants.OUTPUT_GLOBAL_DIR, "evaluation",
                                       "robustness_auc_{}_{}_{}.tsv".format(prefix, n_end, ss_ratio)), sep='\t')

@@ -112,8 +112,8 @@ def main(prefix, base_folder, sim_method, file_format, pf, datasets, algos, cuto
         cur_res[4]
         h_scores[cur_res[0]].loc["{}_{}_modules_{}".format(cur_res[1], cur_res[2], cur_res[3]), "dataset"] = cur_res[1]
         h_scores[cur_res[0]].loc["{}_{}_modules_{}".format(cur_res[1], cur_res[2], cur_res[3]), "algo"] = cur_res[2]
-        print(cur_res)
         h_scores[cur_res[0]].loc["{}_{}_modules_{}".format(cur_res[1], cur_res[2], cur_res[3]), "module"] = cur_res[3]
+        print(cur_res)
 
     for cutoff in cutoffs:
         std_homogeneities = []

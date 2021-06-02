@@ -4,7 +4,7 @@ sys.path.insert(0, '../')
 
 import pandas as pd
 
-from fastsemsim.SemSim import *
+from fastsemsim.semsim import *
 
 import constants
 from statsmodels.sandbox.stats.multicomp import fdrcorrection0
@@ -45,7 +45,7 @@ def summarize_modules_ehr(prefix, datasets, algos, base_folder,
 def modules_ehr_for_solution(algo_sample=None, dataset_sample=None, prefix=None,
                              terms_file_name=os.path.join(constants.OUTPUT_GLOBAL_DIR, "oob", "emp_diff_{}_{}_oob.tsv"),
                              modules_file_name=os.path.join(constants.TRUE_SOLUTIONS_DIR,
-                                                            "{}_{}/report/modules_summary.tsv"), emp_ratio_th=0.5, n_dist=5000, n_terms=6573):
+                                                            "{}_{}/report/modules_summary.tsv"), emp_ratio_th=0.5):
     try:
         output_terms = pd.read_csv(terms_file_name.format(dataset_sample, algo_sample), sep='\t', index_col=0).dropna()
     except Exception as e:
@@ -73,7 +73,7 @@ def modules_ehr_for_solution(algo_sample=None, dataset_sample=None, prefix=None,
     ## correct HG scores
     sorted_genes_hg = filtered_genes.sort_values(by=['hg_pval_max'], ascending=False)
     sig_genes_hg_pval = np.append(sorted_genes_hg["hg_pval_max"].values,
-                                  np.zeros(n_terms - np.size(sorted_genes_hg["hg_pval_max"].values)))
+                                  np.zeros(7435 - np.size(sorted_genes_hg["hg_pval_max"].values)))
     sig_genes_hg_pval = [10 ** (-x) for x in sig_genes_hg_pval]
     fdr_results = fdrcorrection0(sig_genes_hg_pval, alpha=0.05, method='indep', is_sorted=False)
     n_hg_true = len([cur for cur in fdr_results[0] if cur])
@@ -87,27 +87,21 @@ def modules_ehr_for_solution(algo_sample=None, dataset_sample=None, prefix=None,
         hg_cutoff = sig_hg_genes.iloc[- 1]["hg_pval_max"]
         statistics["hg_cutoff"] = round(hg_cutoff, 2)
         statistics["hg_corrected"] = len(sig_hg_genes.index)
-        print "HG cutoff: {}, n={}".format(hg_cutoff, len(sig_hg_genes.index))
+        print("HG cutoff: {}, n={}".format(hg_cutoff, len(sig_hg_genes.index)))
 
     ## correct EMP score
-    if statistics["hg_corrected"]==0:
-        emp_cutoff=0
-        sig_emp_genes=pd.Series([])
-        n_emp_true=0
-    else:
-        sorted_genes_emp = filtered_genes.sort_values(by=['emp_pval_max'])
-        sorted_genes_emp.loc[sorted_genes_emp['emp_pval_max'] == 0, 'emp_pval_max'] = 1.0 / n_dist 
-        sig_genes_emp_pval = sorted_genes_emp["emp_pval_max"].values
-        sig_genes_emp_pval = sorted_genes_emp.loc[sig_hg_genes.index, "emp_pval_max"].values
-        fdr_results = fdrcorrection0(sig_genes_emp_pval, alpha=0.05, method='indep', is_sorted=False)
-        n_emp_true = len([cur for cur in fdr_results[0] if cur])
-        sig_emp_genes = sorted_genes_emp.iloc[:n_emp_true, :]
-        emp_cutoff = sig_emp_genes.iloc[- 1]["emp_pval_max"] if n_emp_true > 0 else 0
+    sorted_genes_emp = filtered_genes.sort_values(by=['emp_pval_max'])
+    sorted_genes_emp.loc[sorted_genes_emp['emp_pval_max'] == 0, 'emp_pval_max'] = 1.0 / 5000
+    sig_genes_emp_pval = sorted_genes_emp["emp_pval_max"].values
+    fdr_results = fdrcorrection0(sig_genes_emp_pval, alpha=0.05, method='indep', is_sorted=False)
+    n_emp_true = len([cur for cur in fdr_results[0] if cur])
+    sig_emp_genes = sorted_genes_emp.iloc[:n_emp_true, :]
+    emp_cutoff = sig_emp_genes.iloc[- 1]["emp_pval_max"] if n_emp_true > 0 else 0
 
     ## summarize EMP scores
     statistics["emp_cutoff"] = emp_cutoff
     statistics["emp_corrected"] = len(sig_emp_genes.index)
-    print "EMP cutoff: {}, n={}".format(emp_cutoff, len(sig_emp_genes.index))
+    print("EMP cutoff: {}, n={}".format(emp_cutoff, len(sig_emp_genes.index)))
 
     ## extract number of modules
     n_modules = 0

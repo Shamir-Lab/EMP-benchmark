@@ -44,7 +44,7 @@ def compute_redundancy_for_solutions(prefix, datasets, algos, pf=10, sim_method=
         print("cut cutoff: {}".format(cutoff))
         for cur_ds in datasets:
             print("cur ds: {}".format(cur_ds))
-            constants.update_dirs(DATASET_NAME_u=cur_ds)
+            # constants.update_dirs(DATASET_NAME_u=cur_ds)
             for i_algo, cur_algo in enumerate(algos):
                 params.append([compute_redundancy_for_solution,[cutoff, cur_ds, cur_algo, base_folder, file_format, sim_method, pf]])
 
