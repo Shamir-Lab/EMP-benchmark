@@ -74,13 +74,11 @@ Last, move your output files from EMP to the directories as follows:
 5. Content of EMP's go folder under ./go
 6. Content of EMP's dictionaries folder under ./dictionaries
 
-Note that you can also root_dir
-
 ## Run crieria
 
 Our benchmark contains 6 main criteria: EHR, mEHR, Richness, Intra-module homogeneity, Robustness (F1) and Robustness (AUPR).  
 
-The criteria main files reside in evaluation directory. running the criteria is done as follows:
+The criteria main files reside in `src/evaluation` directory. Running the criteria is done as follows:
 
 * To run EHR execute: `ehr_counts.py`: with the following parameters:
 parameters:  
