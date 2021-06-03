@@ -22,13 +22,13 @@ Download the sources and install according to the following:
 Clone the repo from github:
 ```
 git clone https://github.com/Shamir-Lab/EMP-benchmark.git
-cd EMP
+cd EMP-benchmark
 ```
 
 EMP is written in Python 3.6. We recommend using a virtual environment. in Linux:
 ```
-python -m venv emp-env
-source emp-env/bin/activate
+python -m venv emp-benchmark-env
+source emp-benchmark-env/bin/activate
 ```
 
 To install EMP dependencies type:
@@ -61,7 +61,6 @@ mkdir ./true_solutions/
 mkdir ./dictionaries/
 mkdir ./original_datasets/    
 mkdir ./permuted_solutions/
-mkdir ./robustness_solutions/
 ```
 
 Last, move your output files from EMP to the directories as follows:
