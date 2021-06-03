@@ -66,9 +66,9 @@ def init_go_hierarchy():
 
         global vertices
 
-        import utils.go_hierarcies as go_hierarcies
+        import utils.go_hierarchy as go_hierarchy
         ROOT = 'GO:0008150'
-        dict_result, go2geneids, geneids2go, entrez2ensembl = go_hierarcies.build_hierarcy(
+        dict_result, go2geneids, geneids2go, entrez2ensembl = go_hierarchy.build_hierarchy(
             roots=[ROOT])
         vertices = list(dict_result.values())[0]['vertices']
 
@@ -113,7 +113,8 @@ def calc_similarity(mat_adj, x, y, semsim):
     # if mat_adj[key]<0:
     # print i_x,i_y,mat_adj[key]
 
-    if np.isnan(mat_adj[key]):
+    # print(mat_adj[key])
+    if mat_adj[key] is None or np.isnan(mat_adj[key]):
         mat_adj[key] = -100
     mat_adj[key_inv] = mat_adj[key]
 
@@ -188,6 +189,7 @@ def calc_intra_similarity(all_go_terms, pf, enrichment_scores, cache_file, semsi
         print("len(params): {}".format(len(params)))
 
         init_go_metadata()
+
 #         p = multiprocessing.Pool(pf)
 #         p.map(func_star, params)
 #         p.close()

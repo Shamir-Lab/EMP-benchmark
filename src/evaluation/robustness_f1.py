@@ -8,10 +8,9 @@ import argparse
 from pandas.errors import EmptyDataError
 from utils.daemon_multiprocessing import MyPool, func_star
 from statsmodels.sandbox.stats.multicomp import fdrcorrection0
-from utils.add_GO_terms_metadata_agg import get_all_genes_for_term, vertices
-import multiprocessing
+from utils.go_hierarchy import get_all_genes_for_term
 import os
-
+import multiprocessing
 import constants
 
 def get_enriched_terms(algos, datasets, filtered_go_ids, hg_th):

@@ -23,7 +23,11 @@ from goatools.base import download_ncbi_associations
 import constants
 from utils.ensembl2entrez import get_entrez2ensembl_dictionary
 import wget, os
+import gzip
 
+terms_to_genes={}
+go2geneids=None
+vertices=None
 class WrHierGO(object):
     """Write hierarchy object."""
 
@@ -320,25 +324,69 @@ def write_hier_mrk(gosubdag, out):
 def fetch_go_hierarcy():
     obo_file_location = os.path.join(constants.GO_DIR, constants.GO_FILE_NAME)
     if not os.path.exists(os.path.join(constants.GO_DIR, constants.GO_FILE_NAME)):
+        print("Downloading obo file")
         wget.download(constants.GO_OBO_URL, os.path.join(constants.GO_DIR, constants.GO_FILE_NAME))
 
-    print("Downloading gene-GO associations")
-    association_file_location = os.path.join(constants.GO_DIR, constants.GO_ASSOCIATION_FILE_NAME)
-    if not os.path.exists(association_file_location):
-        wget.download(constants.GO_ASSOCIATION_GENE2GEO_URL,
-                      os.path.join(constants.GO_DIR, constants.GO_ASSOCIATION_FILE_NAME))
+    gene_to_go_file_name=os.path.join(constants.GO_DIR, os.path.splitext(os.path.basename(constants.GO_GENE2GO_URL))[0])
+    go_association_file_name=os.path.join(constants.GO_DIR, os.path.splitext(os.path.basename(constants.GO_ASSOCIATION_URL))[0])
+
+    if not os.path.exists(gene_to_go_file_name):
+        print("Downloading gene2go file")
+        wget.download(constants.GO_GENE2GO_URL,
+                      os.path.join(constants.GO_DIR, os.path.basename(constants.GO_GENE2GO_URL)))
+        data=gzip.open(os.path.join(constants.GO_DIR, os.path.basename(constants.GO_GENE2GO_URL)), "rb").read()
+        open(gene_to_go_file_name,'wb+').write(data)
+        os.remove(os.path.join(constants.GO_DIR, os.path.basename(constants.GO_GENE2GO_URL)))
+
+    if not os.path.exists(go_association_file_name):
+        print("Downloading association file")
+        wget.download(constants.GO_ASSOCIATION_URL,
+                      os.path.join(constants.GO_DIR, os.path.basename(constants.GO_ASSOCIATION_URL)))
+        data=gzip.open(os.path.join(constants.GO_DIR, os.path.basename(constants.GO_ASSOCIATION_URL)), "rb").read()
+        open(go_association_file_name,'wb+').write(data)
+        os.remove(os.path.join(constants.GO_DIR, os.path.basename(constants.GO_ASSOCIATION_URL)))
 
     print("Loading gene-GO associations")
     # gene2go = download_ncbi_associations(obo_file_location) - why does this line needed?
-    go2geneids = read_ncbi_gene2go(association_file_location, taxids=[9606], go2geneids=True)
-    geneids2go = read_ncbi_gene2go(association_file_location, taxids=[9606])
+    go2geneids = read_ncbi_gene2go(gene_to_go_file_name, taxids=[9606], go2geneids=True)
+    geneids2go = read_ncbi_gene2go(gene_to_go_file_name, taxids=[9606])
 
     return (go2geneids, geneids2go)
+
+
+def get_all_genes_for_term(cur_root, term, in_subtree):
+    
+    global go2geneids
+    global vertices
+    if go2geneids is None or vertices is None:
+        dict_result, go2geneids, geneids2go, entrez2ensembl = build_hierarchy(roots=['GO:0008150'])
+        vertices = list(dict_result.values())[0]['vertices']
+
+    if term in terms_to_genes:
+        return terms_to_genes[cur_root]
+
+    all_genes = set()
+    if in_subtree:
+        try:
+            all_genes.update(go2geneids[cur_root])
+        except KeyError as e:
+            pass
+
+    for cur_child in vertices[cur_root]["obj"].children:
+        genes=get_all_genes_for_term(cur_child.id, term, in_subtree)
+        if not genes is None:
+            all_genes.update(genes)
+        else:
+            print("gene {} is not containe in hierarchy".format(cur_child.id))
+
+    terms_to_genes[cur_root] = all_genes
+    return all_genes
+
 
 #################################################################
 # Driver
 #################################################################
-def build_hierarcy(roots=['GO:0008150']): #  0008150 0005575 0003674
+def build_hierarchy(roots=['GO:0008150']): #  0008150 0005575 0003674
 
     go2geneids, geneids2go = fetch_go_hierarcy()
 
@@ -361,9 +409,8 @@ def build_hierarcy(roots=['GO:0008150']): #  0008150 0005575 0003674
     return dict_result, go2geneids, geneids2go, get_entrez2ensembl_dictionary()
 
 
-
-########################################### ######################
-# main
-#################################################################
-if __name__ == '__main__':
-    print(build_hierarcy())
+# dict_result, go2geneids, geneids2go, entrez2ensembl = build_hierarchy(
+#     roots=['GO:0008150'])
+# vertices = list(dict_result.values())[0]['vertices']
+# terms_to_genes={}
+# 

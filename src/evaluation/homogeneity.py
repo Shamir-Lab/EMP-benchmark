@@ -9,7 +9,7 @@ import networkx as nx
 from evaluation.modules_report import summarize_modules_ehr
 from utils.go_similarity import calc_intra_similarity
 from utils.daemon_multiprocessing import MyPool, func_star
-
+from utils.go_similarity import init_go_hierarchy 
 
 def calc_homogeneity(cache_file, dataset=None, algo=None, module_i=None, base_folder=None, cutoff=1, module=[], pf=3,
                      file_format=None, sim_method="Resnik"):
@@ -72,6 +72,7 @@ def calc_homogeneity(cache_file, dataset=None, algo=None, module_i=None, base_fo
 
 
 def main(prefix, base_folder, sim_method, file_format, pf, datasets, algos, cutoffs, recalc_module_report):
+    init_go_hierarchy()
     h_scores = {c: pd.DataFrame() for c in cutoffs}
     if recalc_module_report:
         summarize_modules_ehr(prefix, datasets, algos, base_folder)

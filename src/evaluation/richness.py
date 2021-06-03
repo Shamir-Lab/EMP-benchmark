@@ -9,7 +9,7 @@ import argparse
 
 from utils.go_similarity import calc_intra_similarity
 from utils.daemon_multiprocessing import MyPool, func_star
-
+from utils.go_similarity import init_go_hierarchy 
 def compute_redundancy_for_solution(cutoff, cur_ds, cur_algo, base_folder, file_format, sim_method, pf):
     print("current cur_algo: {}".format(cur_algo))
     try:
@@ -36,7 +36,7 @@ def compute_redundancy_for_solution(cutoff, cur_ds, cur_algo, base_folder, file_
     return cutoff, cur_ds, cur_algo, richness
 
 def compute_redundancy_for_solutions(prefix, datasets, algos, pf=10, sim_method='Resnik', cutoffs=[1.0, 2.0, 3.0, 4.0], base_folder=None, file_format=None):
-
+    init_go_hierarchy()
     output = {c: pd.DataFrame() for c in cutoffs}
 
     params=[]
