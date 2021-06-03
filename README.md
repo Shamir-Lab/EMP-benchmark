@@ -28,7 +28,7 @@ cd EMP-benchmark
 EMP is written in Python 3.6. We recommend using a virtual environment. in Linux:
 ```
 python -m venv emp-benchmark-env
-source emp-env/bin/activate
+source emp-benchmark-env/bin/activate
 ```
 
 To install EMP dependencies type:
