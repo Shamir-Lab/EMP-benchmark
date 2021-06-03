@@ -22,7 +22,7 @@ Download the sources and install according to the following:
 Clone the repo from github:
 ```
 git clone https://github.com/Shamir-Lab/EMP-benchmark.git
-cd EMP
+cd EMP-benchmark
 ```
 
 EMP is written in Python 3.6. We recommend using a virtual environment. in Linux:
