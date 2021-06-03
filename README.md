@@ -41,10 +41,12 @@ pip install -r  config/dependencies.txt
 
 First, make a directory for your benchmark (e.g. /path/to/benchmark).
 
-Next, create the benchmark directory structure by running the following lines: 
+Next, specify the data root directory in the config file (under config/conf.json) by setting the `root_dir` field
+
+Then, create the benchmark directory structure by running the lines below: 
 
 ```
-cd /path/to/benchmark/ 
+cd /path/to/root_dir/ 
 mkdir ./cache_global/         
 mkdir ./go/              
 mkdir ./permuted_datasets/    
@@ -63,11 +65,16 @@ mkdir ./original_datasets/
 mkdir ./permuted_solutions/
 ```
 
+
 Last, move your output files from EMP to the directories as follows:
 1. "*_oob.tsv" files under  ./report/oob
 2. "*_md.tsv" files under  ./report/md
-3. robustness solutions folder under robustness_solutions
-4. true solutions folders under ./true_solutions
+3. Content of EMP's robustness solutions folder under robustness_solutions
+4. Content of EMP's true solutions folder under ./true_solutions
+5. Content of EMP's go folder under ./go
+6. Content of EMP's dictionaries folder under ./dictionaries
+
+Note that you can also root_dir
 
 ## Run crieria
 
@@ -141,4 +148,4 @@ parameters:
 
 
 [0]: https://github.com/Shamir-Lab/EMP
-[1]:  https://www.biorxiv.org/content/10.1101/2020.03.10.984963v1
+[1]:  https://www.embopress.org/doi/full/10.15252/msb.20209593
