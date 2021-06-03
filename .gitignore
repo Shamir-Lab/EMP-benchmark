@@ -4,3 +4,4 @@
 /venv
 /.idea
 /emp-benchmark-env
+*/__pycache__
