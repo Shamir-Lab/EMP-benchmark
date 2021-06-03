@@ -14,6 +14,7 @@ RNA files from which GE scores were produced are available at data/ge_datasets.
 - [Set your environment](#set-your-environment)
 - [Set your directory structure](#integrate-your-nbmd-algorithm-with-emp)
 - [Main output files](#main-output-files)
+- [EMP-benchmark container](#emp-benchmark container)
 
 ## Set your environment
 
@@ -143,6 +144,19 @@ parameters:
 * Intra-module homogeneity: `./report/evaluation/homogeneity_avg_matrix_{cutoff}_{prefix}.tsv` - Richness score per algorithm, one file for each similarity cutoff
 * Robustness (f1): `./report/evaluation/robustness_f1_{prefix}_{n_end}_{ss_ratio}.tsv` - robustness f1 score per algorithm, one file for each downsampling ratio 
 * Robustness (AUPR): `./report/evaluation/robustness_aupr_{prefix}_{n_end}_{ss_ratio}.tsv` - robustness aupr score per algorithm, one file for each downsampling ratio
+
+
+## EMP-benchmark container
+EMP-benchmark is also available as ready-to-use tool in a container (alongside EMP[0]).
+The container was generated and tested using udocker.It can also be loaded using Docker.
+To load the container using udocker, do the following steps:
+* Install [udocker](https://github.com/indigo-dc/udocker)
+* Download the container from [here](https://drive.google.com/file/d/1XrWYv9-9x1erkrao_QgdcXeBV264BNzP/view?usp=sharing)
+* Extract the tar file from the tar.gz file
+* Load the tar file as a container by running `udocker import --tocontainer --clone --name=emp emp-ubuntu-18.tar`
+* Go inside the container by running `udocker run emp`
+* the EMP-benchmark project resides under /sandbox/
+* EMP-benchmark can be executed as described above in this README.
 
 
 [0]: https://github.com/Shamir-Lab/EMP
