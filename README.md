@@ -27,7 +27,7 @@ cd EMP
 
 EMP is written in Python 3.6. We recommend using a virtual environment. in Linux:
 ```
-python -m venv emp-env
+python -m venv emp-benchmark-env
 source emp-env/bin/activate
 ```
 
@@ -61,7 +61,6 @@ mkdir ./true_solutions/
 mkdir ./dictionaries/
 mkdir ./original_datasets/    
 mkdir ./permuted_solutions/
-mkdir ./robustness_solutions/
 ```
 
 Last, move your output files from EMP to the directories as follows:
